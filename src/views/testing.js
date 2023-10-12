@@ -86,7 +86,8 @@ function Testing() {
     }
   
     return (
-      <div className="App">
+      <div className="App space-y-2">
+        <p className='font-mono text-8xl'>Skaup Appið!</p>
         <div className='flex items-center justify-center bg-blue-100 p-4 rounded'>
           <div className='grid grid-cols-2'>
             <input className='rounded p-2' value={name} onChange={(e) => setName(e.target.value)} placeholder="Enter player name"/>
@@ -97,7 +98,7 @@ function Testing() {
             <button className='bg-yellow-500 text-white py-2 px-2 m-2 rounded' onClick={handleSubmit}>Submit Guess</button>
           </div>
           <div>
-            <p className='text-lg font-bold text-gray'>{gamePhase}</p>
+            <p className='bg-black rounded p-2 text-lg text-white font-bold text-gray'>{gamePhase}</p>
           </div>
         </div>
         <div className='flex items-start justify-center'>
