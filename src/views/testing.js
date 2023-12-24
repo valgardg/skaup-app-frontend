@@ -3,9 +3,11 @@ import React, { useState, useEffect } from 'react';
 import io from 'socket.io-client';
 import DevTools from '../components/devTools';
 import Player from '../components/player';
+import ResultsPopup from '../components/resultsPopup';
+import ReviewPopup from '../components/reviewPopup';
 
 const socket = io('http://localhost:3001');
-// const socket = io('http://192.168.1.15:3001');
+// const socket = io('http://192.168.1.15:3001'); // for local network testing
 
 // tetsing view
 function Testing() {
@@ -13,7 +15,7 @@ function Testing() {
     const [username, setUsername] = useState('');
     const [guess, setGuess] = useState('');
     const [players, setPlayers] = useState(null);
-    const [gamePhase, setGamePhase] = useState(null);
+    const [gamePhase, setGamePhase] = useState("Join a game!");
     const [joined, setJoined] = useState(false); 
 
     const [ready, setReady] = useState(false);
@@ -110,6 +112,8 @@ function Testing() {
         </div>
         <button className={`text-white py-2 px-4 rounded ${ready ? 'bg-green-500' : 'bg-red-500'}`} onClick={() => toggleReady()}>{ready ? 'Ready' : 'Not ready'}</button>  
         <DevTools socket={socket} />
+        <ReviewPopup socket={socket} username={username}/>
+        <ResultsPopup socket={socket} username={username} players={players} gamePhase={gamePhase}/>
       </div>
       );
 }

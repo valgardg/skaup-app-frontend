@@ -21,22 +21,24 @@ function Player({player, socket, gamePhase}) {
     }
 
     return (
-        <div className="flex flex-col justify-center items-center bg-green-200 m-4 rounded-lg w-56 p-2">
+        <div className="flex flex-col justify-center items-center bg-blue-100 m-4 rounded-lg border-2 border-white w-56 p-2">
             <div className="">
-                <div className={`text-${player?.color}-600`}>{player?.name}</div>
+                <div className={`text-${player?.color}-600 text-xl font-bold`}>{player?.name}</div>
             </div>
-            <div>
-                <p>Guesses</p>
-                {player?.guesses.map((guessObject, idx) => (
-                    <div className={`p-2 rounded w-full ${guessObject.ticked ? 'bg-green-400' : 'bg-red-200'}`}>
-                        <div className="flex items-center justify-center space-x-2">
-                            <button onClick={() => tickGuess(guessObject)} key={idx}>{guessObject.guess}</button>
-                            <button className="bg-red-500 text-white py-1 px-1 rounded text-xs" onClick={() => deleteGuess(guessObject)}>x</button>
+            <div className="w-full text-left">
+                <p className="">Guesses</p>
+                <div className="space-y-2">
+                    {player?.guesses.map((guessObject, idx) => (
+                        <div key={idx} className={`p-2 rounded w-full ${guessObject.ticked ? 'bg-green-400' : 'bg-red-200'}`}>
+                            <div className="flex justify-between space-x-2">
+                                <button onClick={() => tickGuess(guessObject)} key={idx} className="w-full text-left">{guessObject.guess}</button>
+                                <button className="bg-red-500 h-5 text-white px-1 rounded text-xs" onClick={() => deleteGuess(guessObject)}>x</button>
+                            </div>
                         </div>
-                    </div>
-                ))}
+                    ))}
+                </div>
+                <p className="text-lg font-bold">{player.vote_status ? "Ready" : "Not ready"}</p>
             </div>
-            <p>vote status: {player.vote_status ? "Ready" : "Not ready"}</p>
         </div>
     );
 }
