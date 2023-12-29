@@ -6,7 +6,7 @@ import Player from '../components/player';
 import ResultsPopup from '../components/resultsPopup';
 import ReviewPopup from '../components/reviewPopup';
 
-const socket = io('http://localhost:3001');
+const socket = io('http://localhost:5012');
 // const socket = io('http://192.168.1.15:3001'); // for local network testing
 
 // tetsing view
@@ -17,18 +17,17 @@ function Testing() {
     const [players, setPlayers] = useState(null);
     const [gamePhase, setGamePhase] = useState("Join a game!");
     const [joined, setJoined] = useState(false); 
+    const [lobbyName, setLobbyName] = useState('');
 
     const [ready, setReady] = useState(false);
 
-    // when the page is loaded, emit "fetch-game" to the server
-    useEffect(() => {
-      socket.emit('fetch-game');
-    }, []);
-
     useEffect(() => {
         socket.on('game-state', (data) => {
+            console.log("game state emitted ,data: ", data);
+            console.log("data.players:", data.players);
             setPlayers(data.players);
             setGamePhase(data.phase);
+            setLobbyName(data.lobbyName);
             var player = data.players.find(player => player.name === name);
             if(player){
               setReady(player.vote_status);
@@ -50,16 +49,20 @@ function Testing() {
         window.alert("Please enter your name");
         return;
       }
-        var payload = {
-            name: name,
-            color: "red"
-        }
-        socket.emit('join-game', payload);
-        setUsername(name);
-        setJoined(true);
+
+      let lobbyName = prompt("Enter the name of the game you would like to join", "lobby name");
+
+      var payload = {
+          name: name,
+          color: "red",
+          lobbyName: lobbyName
+      }
+      socket.emit('join-game', payload);
+      setUsername(name);
+      setJoined(true);
     }
   
-    const handleSubmit = () => {
+    const handleSubmitGuess = () => {
       if(!joined) {
         window.alert("Please join the game first");
         return;
@@ -97,7 +100,7 @@ function Testing() {
           </div>
           <div className='grid grid-cols-2'>
             <input className='rounded p-2' value={guess} onChange={(e) => setGuess(e.target.value)} placeholder="Enter your guess"/>
-            <button className='bg-yellow-500 text-white py-2 px-2 m-2 rounded' onClick={handleSubmit}>Submit Guess</button>
+            <button className='bg-yellow-500 text-white py-2 px-2 m-2 rounded' onClick={handleSubmitGuess}>Submit Guess</button>
           </div>
           <div>
             <p className='bg-black rounded p-2 text-lg text-white font-bold text-gray'>{gamePhase}</p>
