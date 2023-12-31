@@ -14,6 +14,7 @@ function ReviewPopup({ socket, username }) {
 
     useEffect(() => {
         console.log("username: ", username);
+        console.log("guessDict: ", guessDict);
         var guesses = guessDict[username];
         console.log("guesses: ", guesses?.guesses);
         if(guesses?.guesses.length > 0) {
@@ -23,17 +24,26 @@ function ReviewPopup({ socket, username }) {
     }, [guessDict]);
 
     const toggleAccepted = (guessObject) => {
-        guessObject.accepted = !guessObject.accepted;
+        console.log("accepting object");
+        const updatedGuesses = guesses.map(guess => {
+            if (guess.guess === guessObject.guess) {
+                return { ...guess, accepted: !guess.accepted };
+            }
+            return guess;
+        });
+    
+        setGuesses(updatedGuesses);
         var payload = {
-            guess : guessObject
+            guess: { ...guessObject, accepted: !guessObject.accepted }
         };
+        console.log(payload);
         socket.emit('accept-guess', payload);
     };
     
     const submitReview = () => {
-        console.log("submitting review for: ", guesses[0].owner);
+        console.log("submitting review for: ", guesses[0].owner.name);
         var payload = {
-            name: guesses[0].owner,
+            name: guesses[0].owner.name,
         }
         console.log(payload);
         socket.emit('player-reviewed', payload);

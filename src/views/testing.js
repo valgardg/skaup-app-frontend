@@ -6,7 +6,8 @@ import Player from '../components/player';
 import ResultsPopup from '../components/resultsPopup';
 import ReviewPopup from '../components/reviewPopup';
 
-const socket = io('http://localhost:5012');
+const socket = io('https://skaup-backend-098add53aa0f.herokuapp.com/', { transports: ['websocket']});
+// const socket = io('http://localhost:5012');
 // const socket = io('http://192.168.1.15:3001'); // for local network testing
 
 // tetsing view

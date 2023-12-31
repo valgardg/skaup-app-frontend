@@ -22,13 +22,10 @@ function ResultsPopup({ socket, username, players, gamePhase }) {
         console.log("players: ", players);
         players.forEach(player => {
             var guesses = player.guesses;
+            results[player.name] = 0;
             guesses.forEach(guess => {
                 if(guess.accepted) {
-                    if(player.name in results) {
-                        results[player.name] += 1;
-                    } else {
-                        results[player.name] = 1;
-                    }
+                    results[player.name] += 1;
                 }
             });
         });
@@ -36,11 +33,6 @@ function ResultsPopup({ socket, username, players, gamePhase }) {
         const sortedResults = Object.entries(results);
         sortedResults.sort((a, b) => b[1] - a[1]);
         return sortedResults;
-    };
-
-    const resetGame = () => {
-        socket.emit('reset-game');
-        setDisplay(false);
     };
 
     if(!display) {return;}
@@ -56,7 +48,7 @@ function ResultsPopup({ socket, username, players, gamePhase }) {
                         <p className="text-sm">with {result[1]} point{result[1] > 1 ? "s" : ""}</p>
                     </div>
                 ))}
-                <button className="text-xs text-white font-bold p-2 bg-black rounded" onClick={() => resetGame()} >Restart game</button>
+                <p>Sponsored by Apple™, Microsoft™, and Amazon™</p>
             </div>
         </div>
     );
