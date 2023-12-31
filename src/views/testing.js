@@ -94,7 +94,7 @@ function Testing() {
     return (
       <div className="App space-y-2">
         <p className='font-mono text-8xl'>Skaup Appið!</p>
-        <div className='flex items-center justify-center bg-blue-100 p-4 rounded'>
+        <div className='flex flex-col items-center justify-center bg-blue-100 p-4 rounded'>
           <div className='grid grid-cols-2'>
             <input className='rounded p-2' value={name} onChange={(e) => setName(e.target.value)} placeholder="Enter player name"/>
             <button className='bg-green-500 text-white py-2 px-2 m-2 rounded' onClick={handleJoin}>Join Game</button>
@@ -108,11 +108,15 @@ function Testing() {
           </div>
         </div>
         <div className='flex items-start justify-center'>
-          {players?.map((player, idx) => (
-            <div key={idx}>
-              <Player player={player} socket={socket} gamePhase={gamePhase}/>
-            </div>
-          ))}
+        {
+          players?.map((player, idx) => 
+            player.name === username ? (
+              <div key={idx}>
+                <Player player={player} socket={socket} gamePhase={gamePhase}/>
+              </div>
+            ) : null
+          )
+        }
         </div>
         <button className={`text-white py-2 px-4 rounded ${ready ? 'bg-green-500' : 'bg-red-500'}`} onClick={() => toggleReady()}>{ready ? 'Ready' : 'Not ready'}</button>  
         <DevTools socket={socket} />
